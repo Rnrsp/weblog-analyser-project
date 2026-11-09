@@ -13,16 +13,11 @@ public class LogAnalyzer
     // Use a LogfileReader to access the data.
     private LogfileReader reader;
 
-    /**
-     * Create an object to analyze hourly web accesses.
-     */
-    public LogAnalyzer()
-    { 
-        // Create the array object to hold the hourly
-        // access counts.
+    // Question 5
+    public LogAnalyzer(String filename)
+    {
         hourCounts = new int[HOURS_PER_DAY];
-        // Create the reader to obtain the data.
-        reader = new LogfileReader();
+        reader = new LogfileReader(filename);
     }
 
     /**
@@ -37,16 +32,14 @@ public class LogAnalyzer
         }
     }
 
-    /**
-     * Print the hourly counts.
-     * These should have been set with a prior
-     * call to analyzeHourlyData.
-     */
+    // Question 4
     public void printHourlyCounts()
     {
         System.out.println("Hr: Count");
-        for(int hour = 0; hour < hourCounts.length; hour++) {
+        int hour = 0;
+        while(hour < hourCounts.length) {
             System.out.println(hour + ": " + hourCounts[hour]);
+            hour++;
         }
     }
     
@@ -56,5 +49,55 @@ public class LogAnalyzer
     public void printData()
     {
         reader.printData();
+    }
+    
+    // Question 6 & 7
+    public int numberOfAccesses()
+    {
+        int total = 0;
+        for(int hour = 0; hour < hourCounts.length; hour++) {
+            total += hourCounts[hour];
+        }
+        return total;
+    }
+    
+    // Question 8
+    public int busiestHour()
+    {
+        int maxHour = 0;
+        for(int hour = 1; hour < hourCounts.length; hour++) {
+            if(hourCounts[hour] > hourCounts[maxHour]) {
+                maxHour = hour;
+            }
+        }
+        return maxHour;
+    }
+    
+    // Question 9
+    public int quietestHour()
+    {
+        int minHour = 0;
+        for(int hour = 1; hour < hourCounts.length; hour++) {
+            if(hourCounts[hour] < hourCounts[minHour]) {
+                minHour = hour;
+            }
+        }
+        return minHour;
+    }
+    
+    // Question 11
+    public int busiestTwoHour()
+    {
+        int maxHour = 0;
+        int maxCount = hourCounts[0] + hourCounts[1];
+        
+        for(int hour = 1; hour < hourCounts.length - 1; hour++) {
+            int twoHourCount = hourCounts[hour] + hourCounts[hour + 1];
+            if(twoHourCount > maxCount) {
+                maxCount = twoHourCount;
+                maxHour = hour;
+            }
+        }
+        return maxHour;
     }
 }
